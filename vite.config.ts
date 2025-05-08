@@ -22,6 +22,6 @@ export default defineConfig(({ mode }) => ({
   build: {
     sourcemap: false, // Désactive les .map en prod
     minify: "esbuild", //Optimisation par défaut, rapide
-    target: "es2017",  // Évite le code trop ancien inutile (pour erreur #3 sur PageSpeed)
+    target: "es2022",  // Évite le code trop ancien inutile (pour erreur #3 sur PageSpeed)
   },
 }));
