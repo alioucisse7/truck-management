@@ -2,6 +2,10 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 require('dotenv').config();
 
 // Import routes
@@ -19,9 +23,65 @@ const invoiceRoutes = require('./routes/invoices');
 // Initialize express app
 const app = express();
 
+// Enable trust proxy for Heroku / reverse proxies
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1); // Enable only behind a proxy ( Heroku)
+}
+
 // Middleware
-app.use(cors());
-app.use(express.json());
+const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
+app.use( cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
+// Rate Limiting
+app.use(rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+}));
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://cdn.jsdelivr.net"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:", "https://images.cdn.com"],
+        connectSrc: ["'self'", "https://api.tralogit.com"], // API autorisée
+        objectSrc: ["'none'"],
+      },
+    },
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+    crossOriginEmbedderPolicy: false, // désactive si tu as des assets externes
+  })
+);
+
+app.use((req, res, next) => {
+  res.setHeader(
+    "Permissions-Policy",
+    "geolocation=(), camera=(), microphone=(), interest-cohort=()"
+  );
+  next();
+});
+
+// Input sanitization
+app.use(mongoSanitize());
+app.use(xss());
+
+// Force HTTPS in production
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === 'production' && !req.secure) {
+    return res.redirect(`https://${req.headers.host}${req.url}`);
+  }
+  next();
+});
 
 // Database connection
 mongoose.connect(process.env.MONGO_URL, {

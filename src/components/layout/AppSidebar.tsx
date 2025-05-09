@@ -128,7 +128,7 @@ export function AppSidebar() {
           <Truck className="h-8 w-8 text-sidebar-accent shrink-0" />
           {(isMobile || !isCollapsed) && (
             <span className="font-bold text-xl bg-gradient-to-r from-sidebar-foreground to-sidebar-accent bg-clip-text text-transparent">
-              LogiTrack
+              Tralogit
             </span>
           )}
         </div>
