@@ -1,0 +1,34 @@
+# heroku 
+
+heroku login
+
+heroku create tralogit-backend
+
+heroku git:remote -a tralogit-backend
+
+git push heroku main
+
+or
+
+git push heroku master
+
+heroku ps:scale web=1 //Ensure that at least one instance of the app is running.
+
+heroku open // view backend on keroku
+
+heroku logs --tail // to see information
+
+heroku config:set MONGO_URL=your_mongodb_url STRIPE_SECRET_KEY=xxx -a tralogit-backend // set environment variable
+
+git add .
+git commit -m "Connect to MongoDB Atlas"
+git push heroku main
+
+0.0.0.0/0 // ip pour mongoatlas 
+
+todebug 
+heroku logs --tail
+
+// si ca marche pas
+heroku buildpacks:add -a tralogit-backend https://github.com/lstoll/heroku-buildpack-monorepo
+heroku config:set APP_BASE=server -a tralogit-backend
