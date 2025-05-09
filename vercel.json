@@ -3,6 +3,6 @@
     { "source": "/(.*)", "destination": "/" }
   ],
   "env": {
-    "REACT_APP_API_URL": "https://your-backend-api-url.herokuapp.com"
+    "VITE_API_URL": "https://your-backend-api-url.herokuapp.com"
   }
 }

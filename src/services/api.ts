@@ -3,7 +3,7 @@ import axios from 'axios';
 import { authService } from './authService';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_URL, // Update this with your actual API URL
+  baseURL: import.meta.env.VITE_API_URL, // Update this with your actual API URL
   headers: {
     'Content-Type': 'application/json',
   },
