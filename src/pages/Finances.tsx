@@ -103,24 +103,36 @@ const Finances = () => {
   const { data: summaryData, isLoading: isLoadingSummary } = useQuery({
     queryKey: ['financeSummary', startDate, endDate],
     queryFn: () => financeService.getFinanceSummary({ startDate, endDate }),
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true, 
   });
   
   // Query for finance categories breakdown
   const { data: categoriesData, isLoading: isLoadingCategories } = useQuery({
     queryKey: ['financeCategories', startDate, endDate],
     queryFn: () => financeService.getFinanceCategories({ startDate, endDate }),
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true,    
   });
   
   // Query for yearly revenue overview
   const { data: yearlyData, isLoading: isLoadingYearly } = useQuery({
     queryKey: ['revenueOverview', selectedYear],
     queryFn: () => dashboardService.getRevenueOverview(selectedYear),
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true, 
   });
   
   // Query for recent trips/transactions
   const { data: recentTrips, isLoading: isLoadingTrips } = useQuery({
     queryKey: ['dashboardRecentTrips'],
     queryFn: dashboardService.getRecentTrips,
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true, 
   });
 
   // Format expenses by category data for pie chart
@@ -142,6 +154,8 @@ const Finances = () => {
   const totalRevenue = safeNumber(summaryData?.income);
   const netProfit = safeNumber(summaryData?.profit);
   const profitMargin = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) : '0.0';
+  const fuelExpenses = safeNumber(summaryData?.fuelExpenses);
+  const monthlymanagementFees = safeNumber(summaryData?.monthlymanagementFees);
 
   // Calculate management fees (assuming it's in the categories breakdown)
   const managementFeesTotal = useMemo(() => {
@@ -277,21 +291,21 @@ const Finances = () => {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{managementFeesTotal.toLocaleString()} {currencySymbol}</div>
+            <div className="text-2xl font-bold">{monthlymanagementFees.toLocaleString()} {currencySymbol}</div>
             <p className="text-xs text-muted-foreground">
-              Read-only, calculated as {`Amount ET × % Management Fees`} (default 15%)
+              Read-only, calculated as {`Amount ET × % Management Fees`}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("AmountETCalculation")}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("FuelConsumption")}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalRevenue.toLocaleString()} {currencySymbol}</div>
+            <div className="text-2xl font-bold">{fuelExpenses.toLocaleString()} {currencySymbol}</div>
             <p className="text-xs text-muted-foreground">
-              Sum of (Truck capacity × Equalization) — read-only for all trips.
+              monthly fuel expenses.
             </p>
           </CardContent>
         </Card>
@@ -445,6 +459,27 @@ const Finances = () => {
                       // Calculate management fee (assuming 15% if not specified)
                       const managementFeePercent = trip.managementFeesPercent || 15;
                       const managementFee = (trip.revenue || 0) * (managementFeePercent / 100);
+                      
+                      // Calculate total expenses
+                      const mtqsCalculated = Number(trip.mtqs) || 0;
+                      const managementFees = Math.floor(
+                        ((Number(trip.amountET) || 0) * (Number(trip.managementFeesPercent) || 0)) / 100
+                      );
+                      const missionFees = Number(trip.missionFees) || 0;
+                      const fuelExpense = Number(trip.expenses?.fuel) || 0;
+                      const tollExpense = Number(trip.expenses?.tolls) || 0;
+                      const maintenanceExpense = Number(trip.expenses?.maintenance) || 0;
+                      const otherExpense = Number(trip.expenses?.other) || 0;
+
+                      const totalExpenses =
+                        mtqsCalculated +
+                        managementFees +
+                        missionFees +
+                        fuelExpense +
+                        tollExpense +
+                        maintenanceExpense +
+                        otherExpense;
+
                       return (
                         <div key={trip._id || trip.id} className="flex flex-col sm:flex-row sm:items-center justify-between border-b last:border-0 pb-3 last:pb-0 gap-2">
                           <div className="flex items-center gap-3">
@@ -461,17 +496,18 @@ const Finances = () => {
                                 {new Date(trip.startDate).toLocaleDateString()}
                                 <br />
                                 <span>
-                                  <span className="font-bold">Revenue:</span> {trip.revenue?.toLocaleString()} {currencySymbol}&nbsp;
-                                  <span className="ml-2 font-bold">Mgmt Fee:</span> {managementFee.toLocaleString()} {currencySymbol}
+                                  <span className="font-bold">Amount ET:</span> {trip.amountET?.toLocaleString()} {currencySymbol}&nbsp;
+                                  <span className="ml-2 font-bold">Expenses:</span> {totalExpenses.toLocaleString()} {currencySymbol}
                                 </span>
                               </div>
                             </div>
                           </div>
                           <div className="text-right">
-                            <div className="font-bold">{trip.revenue?.toLocaleString()} {currencySymbol}</div>
                             <div className="text-sm text-muted-foreground">
-                              Revenue
+                              Profit
                             </div>
+                            <div className="font-bold">{trip.revenue?.toLocaleString()} {currencySymbol}</div>
+                           
                           </div>
                         </div>
                       );

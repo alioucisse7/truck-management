@@ -164,7 +164,7 @@ router.post(
           type: 'expense',
           category: 'trip-expenses',
           amount: totalExpenses,
-          date: new Date(),
+          date: new Date(startDate),
           description: `Expenses for trip: ${startLocation} to ${destination}`,
           tripId: trip._id,
           truckId,
@@ -180,7 +180,7 @@ router.post(
           type: 'expense',
           category: 'fuel',
           amount: expenses.fuel,
-          date: new Date(),
+          date: new Date(startDate),//add date of start trip or today date
           description: `Expenses for fuel trip: ${startLocation} to ${destination}`,
           tripId: trip._id,
           truckId,
@@ -195,7 +195,7 @@ router.post(
           type: 'income',
           category: 'trip-revenue',
           amount: amountET,
-          date: new Date(),
+          date: new Date(startDate),
           description: `Revenue from trip: ${startLocation} to ${destination}`,
           tripId: trip._id,
           truckId,
@@ -204,9 +204,26 @@ router.post(
         });
       }
 
-      trip.revenue = amountET;
-      await trip.save();
+      // If trip has management fees, create a finance record
+      if (managementFees) {
+        await Finance.create({
+          type: 'expense',
+          category: 'Management Fees',
+          amount: managementFees,
+          date: new Date(startDate),
+          description: `Expenses for management fees trip: ${startLocation} to ${destination}`,
+          tripId: trip._id,
+          truckId,
+          driverId,
+          companyId: req.user.companyId
+        });
+      }
 
+      const calculatedRevenue = amountET - totalExpenses;
+
+      trip.revenue = calculatedRevenue;
+      await trip.save();
+   
 
       res.status(201).json(trip);
     } catch (err) {
@@ -349,7 +366,57 @@ router.put('/:id', manager, async (req, res) => {
       };
     }
 
+        
     await trip.save();
+
+     // Update or create finance records for this trip
+    // First, delete existing finance records for this trip
+    await Finance.deleteMany({ tripId: trip._id });
+
+    // Create new expense record
+    if (totalExpenses > 0) {
+      await Finance.create({
+        type: 'expense',
+        category: 'trip-expenses',
+        amount: totalExpenses,
+        date: new Date(),
+        description: `Expenses for trip: ${trip.startLocation} to ${trip.destination}`,
+        tripId: trip._id,
+        truckId: trip.truckId,
+        driverId: trip.driverId,
+        companyId: req.user.companyId
+      });
+    }
+
+    // Create fuel expense record if needed
+    if (trip.expenses.fuel > 0) {
+      await Finance.create({
+        type: 'expense',
+        category: 'fuel',
+        amount: trip.expenses.fuel,
+        date: new Date(),
+        description: `Fuel expenses for trip: ${trip.startLocation} to ${trip.destination}`,
+        tripId: trip._id,
+        truckId: trip.truckId,
+        driverId: trip.driverId,
+        companyId: req.user.companyId
+      });
+    }
+
+    // Create revenue record if needed
+    if (amountET > 0) {
+      await Finance.create({
+        type: 'income',
+        category: 'trip-revenue',
+        amount: amountET,
+        date: new Date(),
+        description: `Revenue from trip: ${trip.startLocation} to ${trip.destination}`,
+        tripId: trip._id,
+        truckId: trip.truckId,
+        driverId: trip.driverId,
+        companyId: req.user.companyId
+      });
+    }
 
     res.json(trip);
   } catch (err) {

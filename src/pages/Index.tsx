@@ -27,7 +27,10 @@ const Index = () => {
   
   const { data: recentTrips, isLoading } = useQuery({
     queryKey: ['dashboardRecentTrips'],
-    queryFn: dashboardService.getRecentTrips
+    queryFn: dashboardService.getRecentTrips,
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
   
   return (

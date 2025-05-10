@@ -23,7 +23,10 @@ const DashboardOverview: React.FC = () => {
 
   const { data: stats, isLoading } = useQuery({
     queryKey: ['dashboardStats'],
-    queryFn: dashboardService.getStats
+    queryFn: dashboardService.getStats,
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true, 
   });
 
   if (isLoading) {
@@ -125,7 +128,7 @@ const DashboardOverview: React.FC = () => {
           <div className="text-2xl font-bold">
             {stats.fuelConsumption.toLocaleString()} {currencySymbol}
           </div>
-          <p className="text-xs text-muted-foreground">{t("MonthlyFuel")}</p>
+          <p className="text-xs text-muted-foreground">{t("AllTimeFuel")}</p>
         </CardContent>
       </Card>
     </div>

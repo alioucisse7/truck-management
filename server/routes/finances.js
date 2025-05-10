@@ -88,7 +88,7 @@ router.get('/summary', async (req, res) => {
     const expenseQuery = { 
       companyId: req.user.companyId,
       type: 'expense',
-      category: { $ne: "fuel"}
+      category: { $nin: ["fuel", "Management Fees"]},
     };
     
     if (startDate || endDate) {
@@ -100,15 +100,54 @@ router.get('/summary', async (req, res) => {
       { $group: { _id: null, total: { $sum: "$amount" } } }
     ]);
     
+       
+    // Query for total expenses
+    const fuelExpensesQuery = { 
+      companyId: req.user.companyId,
+      type: 'expense',
+      category: "fuel",
+    };
+    
+    if (startDate || endDate) {
+      fuelExpensesQuery.date = dateFilter;
+    }
+
+    // Calculate fuel expenses 
+    const fuelExpenses = await Finance.aggregate([
+      { $match: fuelExpensesQuery },
+      { $group: { _id: null, total: { $sum: "$amount" } } }
+    ]);
+
+     // Query for total expenses
+     const managementFeesQuery = { 
+      companyId: req.user.companyId,
+      type: 'expense',
+      category: "Management Fees",
+    };
+    
+    if (startDate || endDate) {
+      managementFeesQuery.date = dateFilter;
+    }
+
+    // Calculate management fees 
+    const managementFees = await Finance.aggregate([
+      { $match: managementFeesQuery },
+      { $group: { _id: null, total: { $sum: "$amount" } } }
+    ]);
+
     // Calculate totals
     const totalIncome = incomeResult.length > 0 ? incomeResult[0].total : 0;
     const totalExpense = expenseResult.length > 0 ? expenseResult[0].total : 0;
+    const totalfuelExpenses = fuelExpenses.length > 0 ? fuelExpenses[0].total : 0;
+    const totalmanagementFees = managementFees.length > 0 ? managementFees[0].total : 0;
     const profit = totalIncome - totalExpense;
     
     res.json({
       income: totalIncome,
       expenses: totalExpense,
-      profit: profit
+      profit: profit,
+      fuelExpenses: totalfuelExpenses,
+      monthlymanagementFees: totalmanagementFees
     });
   } catch (err) {
     console.error(err.message);

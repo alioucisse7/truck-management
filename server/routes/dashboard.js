@@ -49,9 +49,7 @@ router.get('/stats', async (req, res) => {
         $match: { 
           companyId: req.user.companyId,
           type: 'expense',
-          category: {
-            $ne: 'fuel',
-          }
+          category: { $nin: ["fuel", "Management Fees"]}
         }
       },
       { $group: { _id: null, total: { $sum: "$amount" } } }
@@ -69,10 +67,24 @@ router.get('/stats', async (req, res) => {
       { $group: { _id: null, total: { $sum: "$amount" } } }
     ]);
     
+       
+    // Calculate fuel expenses (all time)
+    const ManagementFeesExpenses = await Finance.aggregate([
+      { 
+        $match: { 
+          companyId: req.user.companyId,
+          type: 'expense',
+          category: 'Management Fees'
+        }
+      },
+      { $group: { _id: null, total: { $sum: "$amount" } } }
+    ]);
+
     // Calculate totals
     const totalRevenue = revenueResult.length > 0 ? revenueResult[0].total : 0;
     const totalExpenses = expensesResult.length > 0 ? expensesResult[0].total : 0;
     const fuelConsumption = fuelExpenses.length > 0 ? fuelExpenses[0].total : 0;
+    const ManagementFees = ManagementFeesExpenses.length > 0 ? ManagementFeesExpenses[0].total : 0;
     
     res.json({
       activeTrucks,
@@ -81,6 +93,7 @@ router.get('/stats', async (req, res) => {
       totalRevenue,
       totalExpenses,
       netProfit: totalRevenue - totalExpenses,
+      managementFees: ManagementFees,
       fuelConsumption
     });
   } catch (err) {
@@ -141,7 +154,7 @@ router.get('/revenue-overview', async (req, res) => {
         $match: {
           companyId: req.user.companyId,
           type: 'expense',
-          category: { $ne: "fuel"},
+          category: { $nin: ["fuel", "Management Fees"] },
           date: {
             $gte: new Date(`${year}-01-01`),
             $lte: new Date(`${year}-12-31`)
