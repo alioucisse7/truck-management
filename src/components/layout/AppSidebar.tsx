@@ -37,6 +37,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import SidebarLanguageSelector from "./SidebarLanguageSelector";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "./ThemeSwitcher";
+import logo from '../../assets/logo-blue-vert-transp.png';
+import logoCamion from '../../assets/logo-camion2-l.png';
 
 const items = [
   {
@@ -124,12 +126,25 @@ export function AppSidebar() {
             </Button>
           </div>
         )} */}
-        <div className="flex items-center gap-2 px-2 w-full">
-          <Truck className="h-8 w-8 text-sidebar-accent shrink-0" />
-          {(isMobile || !isCollapsed) && (
-            <span className="font-bold text-xl bg-gradient-to-r from-sidebar-foreground to-sidebar-accent bg-clip-text text-transparent">
-              Tralogit
-            </span>
+        <div > 
+        {/* className="flex items-center gap-2 px-2 w-full" */}
+          {/* <Truck className="h-8 w-8 text-sidebar-accent shrink-0" /> */}
+          {(isMobile || !isCollapsed) ? (
+            <div className="w-44 h-14 overflow-hidden cursor-pointer"  onClick={() => navigate("/")}>
+              <img
+                src={logo}
+                alt="Logo"
+                className="w-full h-full object-cover "
+              />
+            </div>
+          ) :(
+            <div className="w-65 h-14 flex items-center justify-center cursor-pointer"  onClick={() => navigate("/")}>
+              <img
+                src={logoCamion}
+                alt="Truck Logo"
+                className="w-full h-full object-cover scale-150"
+              />
+            </div>
           )}
         </div>
       </SidebarHeader>

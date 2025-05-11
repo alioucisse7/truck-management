@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from '@/contexts/AuthContext';
 import { useSidebar } from '../ui/sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
+import logo from '../../assets/logo-blue-vert-transp.png';
 
 interface HeaderProps {
   toggleSideBar: () => void;
@@ -76,6 +77,13 @@ const Header: React.FC = () => {
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle sidebar</span>
           </Button>
+          {/* <div className="w-44 h-14 overflow-hidden">
+              <img
+                src={logo}
+                alt="Logo"
+                className="w-full h-full object-cover"
+              />
+            </div> */}
           <h1 className="text-lg font-semibold md:text-xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">Truck Fleet Management</h1>
         </div>
         

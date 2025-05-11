@@ -36,6 +36,16 @@ const TripCalendar = ({ truck, driverSalaryMap  }: TripCalendarProps) => {
   const currencySymbol = currencySymbols[currency];
   const [dataTrip, setTripData] = useState(trips);
 
+  useEffect(() => {
+    if (truck) {
+      const filteredTrips = trips.filter(trip => trip.truckId._id === truck.id);
+      setTripData(filteredTrips);
+    }
+
+    handleMonthChange(new Date());
+  }, [truck, trips]);
+  
+
   const calculateTotalExpenses = (trip: Trip) => {
     const mtqsCalculated =
       typeof trip.mtqs === "number"
@@ -91,13 +101,16 @@ const TripCalendar = ({ truck, driverSalaryMap  }: TripCalendarProps) => {
   const handleMonthChange = (newDate: Date) => {
     setDate(newDate);
 
-    const data =  trips.filter(trip => {
-      const tripDate = new Date(trip.startDate);
-      return  tripDate.getMonth() === newDate.getMonth() &&
-      tripDate.getFullYear() === newDate.getFullYear()
-    });
-    
-    setTripData(data);
+    if (truck) {
+      const data = trips.filter(trip => {
+        const tripDate = new Date(trip.startDate);
+        return tripDate.getMonth() === newDate.getMonth() &&
+               tripDate.getFullYear() === newDate.getFullYear() &&
+               trip.truckId._id === truck.id;
+      });
+      
+      setTripData(data);
+    }
   };
 
   const currentMonthTrips = [...dataTrip].sort((a, b) => 
