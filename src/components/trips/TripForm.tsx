@@ -967,9 +967,9 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
               <FormLabel className="pb-1">{t("TruckCapacity")}</FormLabel>
               <Input
                 value={truckCapacity}
-                readOnly
-                tabIndex={-1}
-                className="bg-gray-100 mt-2"
+                // readOnly
+                // tabIndex={-1}
+                // className="bg-gray-100 mt-2"
                 aria-label={t("TruckCapacity")}
                 placeholder={t("Capacity")}
               />
@@ -1039,7 +1039,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
               <FormItem>
                 <FormLabel>{t("StartLocation")}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t("LocationPlaceholder")} {...field} />
+                  <Input placeholder={t("StartLocation")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -1053,7 +1053,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
               <FormItem>
                 <FormLabel>{t("Destination")}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t("DestinationPlaceholder")} {...field} />
+                  <Input placeholder={t("Destination")} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -1093,7 +1093,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
             name="distance"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("DistanceKm")}</FormLabel>
+                <FormLabel>{t("Distance")}</FormLabel>
                 <FormControl>
                   <Input type="number" min="0" {...field} />
                 </FormControl>
@@ -1109,7 +1109,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
                 value={calculatedRevenue.toLocaleString("fr-FR")}
                 readOnly
                 tabIndex={-1}
-                className="bg-gray-100 font-bold"
+                className="bg-gray-100 dark:bg-white/30 font-bold"
                 aria-label={t("ProfitCalculated")}
               />
             </div>
@@ -1123,7 +1123,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
             name="numBL"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("NumOfBL")}</FormLabel>
+                <FormLabel>{t("NumBL")}</FormLabel>
                 <FormControl>
                   <Input type="number" min="0" {...field} />
                 </FormControl>
@@ -1151,7 +1151,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
                 value={amountET.toLocaleString("fr-FR")}
                 readOnly
                 tabIndex={-1}
-                className="bg-gray-100"
+                className="bg-gray-100 dark:bg-white/30"
                 aria-label={t("AmountETCalculated")}
               />
             </div>
@@ -1200,7 +1200,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
                 value={mtqsCalculated.toLocaleString("fr-FR")}
                 readOnly
                 tabIndex={-1}
-                className="bg-gray-100"
+                className="bg-gray-100 dark:bg-white/30"
                 aria-label={t("MtqsCalculated")}
               />
             </div>
@@ -1243,7 +1243,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
                 value={managementFees.toLocaleString("fr-FR")}
                 readOnly
                 tabIndex={-1}
-                className="bg-gray-100"
+                className="bg-gray-100 dark:bg-white/30"
                 aria-label={t("ManagementFees")}
               />
             </div>
@@ -1315,7 +1315,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
             value={totalExpenses.toLocaleString("fr-FR")}
             readOnly
             tabIndex={-1}
-            className="bg-gray-100 font-bold text-lg"
+            className="bg-gray-100 dark:bg-white/30 font-bold text-lg"
             aria-label={t("TotalExpenses")}
           />
         </div>
@@ -1328,7 +1328,7 @@ const TripForm = ({ trip, onSubmit }: TripFormProps) => {
               <FormItem>
                 <FormLabel>{t("ObservComments")}</FormLabel>
                 <FormControl>
-                  <Textarea placeholder={t("CommentsPlaceholder")} {...field} value={field.value || ""} />
+                  <Textarea placeholder={t("TypeComments")} {...field} value={field.value || ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

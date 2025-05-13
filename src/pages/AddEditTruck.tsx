@@ -8,6 +8,8 @@ import { truckFormSchema } from "@/lib/form-schemas";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "@/hooks/useAppSelector";
 import { fetchTruckById, createTruck, updateTruck } from "@/store/trucksSlice";
+import { ChevronLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const AddEditTruck = () => {
   const { t } = useTranslation();
@@ -110,15 +112,24 @@ const AddEditTruck = () => {
   }
 
   return (
-    <div className="container mx-auto py-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">
+    <div className="md:container mx-auto py-6">
+      <div className="flex items-center justify-between">
+        
+                    <div className="flex items-center gap-4">
+               
+                      <Button variant="ghost" onClick={() => navigate('/trucks')}>
+                        <ChevronLeft className="h-4 w-4 mr-2" />
+                        {t("Back")}
+                      </Button>
+                      <div><h1 className="text-3xl font-bold">
           {id ? t("EditTruck") : t("AddNewTruck")}
         </h1>
         <p className="text-muted-foreground">
           {id ? t("UpdateTruckInfo") : t("AddNewTruckFleet")}
-        </p>
-      </div>
+        </p></div>
+                     
+                    </div>
+            </div>
       
       <div className="bg-card rounded-lg border p-6 shadow-sm">
         <TruckForm truck={id && selectedTruck || undefined} onSubmit={handleSubmit} />

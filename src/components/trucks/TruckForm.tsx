@@ -82,6 +82,7 @@ export function TruckForm({ truck, onSubmit }: TruckFormProps) {
     if (truck) {
       const values = {
         ...truck,
+        assignedDriverId: truck?.assignedDriverId || "none",
         capacity : truck.capacity || 0,
         fuelLevel: truck.fuelLevel || 100,
         lastMaintenance: truck.lastMaintenance 
@@ -92,7 +93,8 @@ export function TruckForm({ truck, onSubmit }: TruckFormProps) {
     }
   }, [truck, form]);
 
-  
+  console.log("form: ", form);
+
   const { currency } = useCurrency();
   const currencySymbol = currencySymbols[currency];
 
@@ -213,7 +215,7 @@ export function TruckForm({ truck, onSubmit }: TruckFormProps) {
                 <FormLabel>{t("AssignedDriver")}</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  value={field.value || "none"}
+                  value={field?.value || "none"}
                 >
                   <FormControl>
                     <SelectTrigger>

@@ -175,7 +175,7 @@ const AddEditTrip = () => {
   } : undefined;
 
   return (
-    <div className="container mx-auto py-6">
+    <div className="md:container mx-auto py-6">
       <div className="mb-6">
         <h1 className="text-3xl font-bold">
           {t(id ? "EditTrip" : "AddNewTrip")}

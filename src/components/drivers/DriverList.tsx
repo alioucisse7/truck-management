@@ -5,6 +5,7 @@ import DriverCard from './DriverCard';
 import { LoadingState } from '@/components/ui/loading-state';
 import { DriverData } from '@/store/driversSlice';
 import { useFetchData } from '@/hooks/useFetchData';
+import { useTranslation } from 'react-i18next';
 
 interface DriverListProps {
   searchQuery?: string;
@@ -21,6 +22,8 @@ const DriverList: React.FC<DriverListProps> = ({
   isLoading = false,
   error = '',                                   
 }) => {
+
+  const { t } = useTranslation();
   // const { data: drivers, loading, error } = useFetchData<DriverData>('/drivers');
 
   // Filter drivers based on search query and status filter
@@ -41,7 +44,7 @@ const DriverList: React.FC<DriverListProps> = ({
   }, [searchQuery, statusFilter, drivers]);
   
   if (isLoading) {
-    return <LoadingState message="Loading drivers..." />;
+    return <LoadingState message={t("LoadingDriver")} />;
   }
 
   if (error) {
@@ -52,7 +55,7 @@ const DriverList: React.FC<DriverListProps> = ({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
-        <h3 className="text-lg font-medium">Error loading drivers</h3>
+        <h3 className="text-lg font-medium">{t("ErrorLoadingDriver")}</h3>
         <p className="text-muted-foreground mt-1">{error}</p>
       </div>
     );
@@ -85,8 +88,8 @@ const DriverList: React.FC<DriverListProps> = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h3 className="text-lg font-medium">No drivers found</h3>
-          <p className="text-muted-foreground mt-1">Try adjusting your search criteria.</p>
+          <h3 className="text-lg font-medium">{t("NoDriverFound")}</h3>
+          <p className="text-muted-foreground mt-1">{t("AjustSearch")}</p>
         </div>
       )}
     </div>

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import InvoiceGenerator from '@/components/invoices/InvoiceGenerator';
 import InvoiceForm from '@/components/invoices/InvoiceForm';
+import { ChevronLeft } from 'lucide-react';
 
 const InvoiceGeneratorPage = () => {
   const { t } = useTranslation();
@@ -62,14 +63,30 @@ const InvoiceGeneratorPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="mb-6">
+      <div className="flex items-center justify-between">
+                          <div className="flex items-center">
+                            <Button variant="ghost" onClick={() => navigate('/invoices')}>
+                              <ChevronLeft className="h-4 w-4 mr-2" />
+                              {t("Back")}
+                            </Button>
+                            <div><h1 className="text-3xl font-bold">
+          {t("GenerateInvoice")}
+        </h1>
+        <p className="text-muted-foreground">
+          {t("GenerateInvoiceFromTrips")}
+        </p></div>
+                           
+                          </div>
+                  </div>
+
+      {/* <div className="mb-6">
         <h1 className="text-3xl font-bold">
           {t("GenerateInvoice")}
         </h1>
         <p className="text-muted-foreground">
           {t("GenerateInvoiceFromTrips")}
         </p>
-      </div>
+      </div> */}
       
       {!generatedData ? (
         <InvoiceGenerator onGenerated={handleGenerated} />

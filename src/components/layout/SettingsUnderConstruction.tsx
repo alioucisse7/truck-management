@@ -49,7 +49,7 @@ const SettingsUnderConstruction: React.FC = () => {
         </TabsList>
         
         {/* General Settings */}
-        <TabsContent value="general" className="space-y-4 mt-4">
+        <TabsContent value="general" className="space-y-4 mt-10 md:mt-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -91,7 +91,7 @@ const SettingsUnderConstruction: React.FC = () => {
         </TabsContent>
         
         {/* Appearance Settings */}
-        <TabsContent value="appearance" className="space-y-4 mt-4">
+        <TabsContent value="appearance" className="space-y-4 mt-10 md:mt-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -107,7 +107,7 @@ const SettingsUnderConstruction: React.FC = () => {
         </TabsContent>
         
         {/* Notification Settings */}
-        <TabsContent value="notifications" className="space-y-4 mt-4">
+        <TabsContent value="notifications" className="space-y-4 mt-10 md:mt-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -123,7 +123,7 @@ const SettingsUnderConstruction: React.FC = () => {
         </TabsContent>
         
         {/* Units Settings */}
-        <TabsContent value="units" className="space-y-4 mt-4">
+        <TabsContent value="units" className="space-y-4 mt-10 md:mt-4">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -143,7 +143,7 @@ const SettingsUnderConstruction: React.FC = () => {
         
         {/* Other tabs with under construction message */}
         {["api", "security"].map((tab) => (
-          <TabsContent key={tab} value={tab} className="space-y-4 mt-4">
+          <TabsContent key={tab} value={tab} className="space-y-4 mt-10 md:mt-4">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">

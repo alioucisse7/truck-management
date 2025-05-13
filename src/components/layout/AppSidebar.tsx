@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Truck,
@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "./ThemeSwitcher";
 import logo from '../../assets/logo-blue-vert-transp.png';
 import logoCamion from '../../assets/logo-camion2-l.png';
+import { useAuth } from "@/contexts/AuthContext";
 
 const items = [
   {
@@ -95,6 +96,7 @@ export function AppSidebar() {
   const isCollapsed = state === "collapsed";
   const isMobile = useIsMobile();
   const { t } = useTranslation();
+ const { user, logout } = useAuth();
 
   const { i18n } = useTranslation();
   const currentLang = i18n.language.startsWith("fr") ? "fr" : "en";
@@ -105,6 +107,12 @@ export function AppSidebar() {
   const handleToggleTheme = () => {
     setIsDarkMode(!isDarkMode);
   };
+
+   // Logout handler
+    const handleLogout = useCallback(() => {
+      logout();
+      navigate("/login");
+    }, [logout, navigate]);
 
   return (
     <Sidebar collapsible="icon">
@@ -211,7 +219,9 @@ export function AppSidebar() {
           <div className="w-full flex flex-col gap-2">
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" className="w-full flex justify-center">
+                <Button variant="ghost" size="icon" className="w-full flex justify-center"
+                 onClick={handleLogout}
+                >
                   <LogOut className="h-5 w-5" />
                 </Button>
               </TooltipTrigger>

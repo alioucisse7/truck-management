@@ -316,7 +316,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ initialData, onSubmit, isLoad
               
               <div className="space-y-4">
                 {watchItems.map((_, index) => (
-                  <div key={index} className="grid grid-cols-12 gap-2 items-start">
+                  <div key={index} className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-start">
                     <div className="col-span-5 sm:col-span-6">
                       <FormField
                         control={form.control}
@@ -331,7 +331,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ initialData, onSubmit, isLoad
                         )}
                       />
                     </div>
-                    <div className="col-span-2 sm:col-span-1">
+                    <div className="col-span-4 sm:col-span-1">
                       <FormField
                         control={form.control}
                         name={`items.${index}.quantity`}
@@ -353,7 +353,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ initialData, onSubmit, isLoad
                         )}
                       />
                     </div>
-                    <div className="col-span-2">
+                    <div className="col-span-4 sm:col-span-2">
                       <FormField
                         control={form.control}
                         name={`items.${index}.unitPrice`}
@@ -381,7 +381,7 @@ const InvoiceForm: React.FC<InvoiceFormProps> = ({ initialData, onSubmit, isLoad
                         )}
                       />
                     </div>
-                    <div className="col-span-2">
+                    <div className="col-span-4 sm:col-span-2">
                       <FormField
                         control={form.control}
                         name={`items.${index}.amount`}

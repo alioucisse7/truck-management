@@ -7,6 +7,8 @@ import { fetchInvoiceById, createInvoice, updateInvoice } from '@/store/invoices
 import { useToast } from '@/hooks/use-toast';
 
 import InvoiceForm from '@/components/invoices/InvoiceForm';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft } from 'lucide-react';
 
 const AddEditInvoice = () => {
   const { t } = useTranslation();
@@ -104,14 +106,29 @@ const AddEditInvoice = () => {
 
   return (
     <div className="space-y-6">
-      <div className="mb-6">
+       <div className="flex items-center justify-between">
+                          <div className="flex items-center">
+                            <Button variant="ghost" onClick={() => navigate('/invoices')}>
+                              <ChevronLeft className="h-4 w-4 mr-2" />
+                              {t("Back")}
+                            </Button>
+                            <div><h1 className="text-3xl font-bold">
+          {id ? t("EditInvoice") : t("CreateNewInvoice")}
+        </h1>
+        <p className="text-muted-foreground">
+          {id ? t("UpdateInvoiceDetails") : t("CreateNewInvoiceDetails")}
+        </p></div>
+                           
+                          </div>
+                  </div>
+      {/* <div className="mb-6">
         <h1 className="text-3xl font-bold">
           {id ? t("EditInvoice") : t("CreateNewInvoice")}
         </h1>
         <p className="text-muted-foreground">
           {id ? t("UpdateInvoiceDetails") : t("CreateNewInvoiceDetails")}
         </p>
-      </div>
+      </div> */}
       
       <div className="bg-card rounded-lg border p-6 shadow-sm">
         <InvoiceForm 

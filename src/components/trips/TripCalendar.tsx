@@ -214,7 +214,7 @@ const TripCalendar = ({ truck, driverSalaryMap  }: TripCalendarProps) => {
               <div>
                 <label className="block text-xs mb-1 font-medium">Loading Costs ({currencySymbol})</label>
                 <Input
-                 className="bg-gray-100"
+                 className="bg-gray-100 dark:bg-white/30"
                   type="number"
                   min={0}
                   step={1}
@@ -225,7 +225,7 @@ const TripCalendar = ({ truck, driverSalaryMap  }: TripCalendarProps) => {
               <div>
                 <label className="block text-xs mb-1 font-medium">Challenge ({currencySymbol})</label>
                 <Input
-                 className="bg-gray-100"
+                 className="bg-gray-100 dark:bg-white/30"
                   type="number"
                   min={0}
                   step={1}
@@ -236,7 +236,7 @@ const TripCalendar = ({ truck, driverSalaryMap  }: TripCalendarProps) => {
               <div>
                 <label className="block text-xs mb-1 font-medium">Other Mgmt Fees ({currencySymbol})</label>
                 <Input
-                  className="bg-gray-100"
+                  className="bg-gray-100 dark:bg-white/30"
                   type="number"
                   min={0}
                   step={1}
@@ -247,7 +247,7 @@ const TripCalendar = ({ truck, driverSalaryMap  }: TripCalendarProps) => {
               <div>
                 <label className="block text-xs mb-1 font-medium">Other Fees ({currencySymbol})</label>
                 <Input
-                 className="bg-gray-100"
+                 className="bg-gray-100 dark:bg-white/30"
                   type="number"
                   min={0}
                   step={1}

@@ -5,6 +5,8 @@ import { useToast } from "@/hooks/use-toast";
 import { DriverForm } from "@/components/drivers/DriverForm";
 import { z } from "zod";
 import { driverFormSchema } from "@/lib/form-schemas";
+import { ChevronLeft} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "@/hooks/useAppSelector";
 import { createDriver, updateDriver, fetchDriverById } from "@/store/driversSlice";
@@ -93,16 +95,23 @@ const AddEditDriver = () => {
   }
 
   return (
-    <div className="container mx-auto py-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">
-          {id ? t("EditDriver") : t("AddNewDriver")}
-        </h1>
-        <p className="text-muted-foreground">
-          {id ? t("UpdateDriverInfo") : t("AddNewDriverTeam")}
-        </p>
+    <div className="md:container mx-auto py-2">
+      <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Button variant="ghost" onClick={() => navigate('/drivers')}>
+                  <ChevronLeft className="h-4 w-4 mr-2" />
+                  {t("Back")}
+                </Button>
+                <div> <h1 className="text-3xl font-bold">
+                 {id ? t("EditDriver") : t("AddNewDriver")}
+                 </h1>
+                 <p className="text-muted-foreground">
+                {id ? t("UpdateDriverInfo") : t("AddNewDriverTeam")}
+                </p></div>
+               
+              </div>
       </div>
-      
+     
       <div className="bg-card rounded-lg border p-6 shadow-sm">
         <DriverForm driver={id && selectedDriver || undefined} onSubmit={handleSubmit} />
       </div>
